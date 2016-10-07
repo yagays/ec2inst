@@ -32,13 +32,15 @@ def make_instance_list(response, columns):
         instance_type = instance["InstanceType"]
         availability_zone = instance["Placement"]["AvailabilityZone"]
         instance_state = instance["State"]["Name"]
-        status_check = str(instance["SourceDestCheck"])
         public_dns_name = instance["PublicDnsName"]
         if "PublicIpAddress" in instance.keys():
             public_ip_address = instance["PublicIpAddress"]
         else:
             public_ip_address = "-"
-        private_ip_address = instance["PrivateIpAddress"]
+        if "PrivateIpAddress" in instance.keys():
+            private_ip_address = instance["PrivateIpAddress"]
+        else:
+            private_ip_address = "-"
         if "KeyName" in instance.keys():
             key_name = instance["KeyName"]
         else:
@@ -81,7 +83,7 @@ def prettyprint_table(d, columns):
                 if d[column][i] == "running":
                     output_line += colors["green"] + d[column][i].ljust(
                         max_len[column], " ") + "  " + colors["clear"]
-                elif d[column][i] == "stopped":
+                elif d[column][i] == "stopped" or d[column][i] == "terminated":
                     output_line += colors["red"] + d[column][i].ljust(
                         max_len[column], " ") + "  " + colors["clear"]
                 else:
@@ -101,7 +103,6 @@ def main():
         "availability_zone",
         "instance_state",
         "instance_state_code",
-        "status_check",
         "public_dns_name",
         "public_ip_address",
         "private_ip_address",
