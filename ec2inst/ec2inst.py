@@ -22,7 +22,7 @@ colors = {
 def make_instance_list(response, columns):
     output = defaultdict(list)
     for instance_unit in response["Reservations"]:
-        instance = instance_unit["Instances"][0]
+        instance = defaultdict(lambda :"-", instance_unit["Instances"][0])
 
         if "Tags" in instance.keys():
             instance_name = instance["Tags"][0]["Value"]
@@ -33,18 +33,9 @@ def make_instance_list(response, columns):
         availability_zone = instance["Placement"]["AvailabilityZone"]
         instance_state = instance["State"]["Name"]
         public_dns_name = instance["PublicDnsName"]
-        if "PublicIpAddress" in instance.keys():
-            public_ip_address = instance["PublicIpAddress"]
-        else:
-            public_ip_address = "-"
-        if "PrivateIpAddress" in instance.keys():
-            private_ip_address = instance["PrivateIpAddress"]
-        else:
-            private_ip_address = "-"
-        if "KeyName" in instance.keys():
-            key_name = instance["KeyName"]
-        else:
-            key_name = "-"
+        public_ip_address = instance["PublicIpAddress"]
+        private_ip_address = instance["PrivateIpAddress"]
+        key_name = instance["KeyName"]
         monitoring = instance["Monitoring"]["State"]
         launch_time = instance["LaunchTime"].strftime("%Y/%m/%d %H:%M:%S")
         security_group = ",".join([g["GroupName"]
