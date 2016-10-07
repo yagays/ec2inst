@@ -27,9 +27,9 @@ optional arguments:
   -c COLUMNS, --columns COLUMNS
                         columns to display: instance_name,instance_id,instance
                         _type,availability_zone,instance_state,instance_state_
-                        code,status_check,public_dns_name,public_ip_address,pr
-                        ivate_ip_address,key_name,monitoring,launch_time,secur
-                        ity_group,image_id
+                        code,public_dns_name,public_ip_address,private_ip_addr
+                        ess,key_name,monitoring,launch_time,security_group,ima
+                        ge_id
 ```
 
 ### Using AWS CLI credentials
