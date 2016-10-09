@@ -6,23 +6,26 @@ import argparse
 import boto3
 from collections import defaultdict
 
-colors = {
-    "clear": "\033[0m",
-    "black": "\033[30m",
-    "red": "\033[31m",
-    "green": "\033[32m",
-    "yellow": "\033[33m",
-    "blue": "\033[34m",
-    "purple": "\033[35m",
-    "cyan": "\033[36m",
-    "white": "\033[37m"
-}
+
+def colorize_str(s, color):
+    # http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-lifecycle.html
+    if color == "green":
+        output_str = "\033[32m" + s + "\033[0m"
+    elif color == "red":
+        output_str = "\033[31m" + s + "\033[0m"
+    elif color == "yellow":
+        output_str = "\033[33m" + s + "\033[0m"
+    elif color == "blue":
+        output_str = "\033[34m" + s + "\033[0m"
+    else:
+        output_str = s
+    return output_str
 
 
 def make_instance_list(response, columns):
     output = defaultdict(list)
     for instance_unit in response["Reservations"]:
-        instance = defaultdict(lambda :"-", instance_unit["Instances"][0])
+        instance = defaultdict(lambda: "-", instance_unit["Instances"][0])
 
         if "Tags" in instance.keys():
             instance_name = instance["Tags"][0]["Value"]
@@ -71,15 +74,17 @@ def prettyprint_table(d, columns):
             if column != "instance_state":
                 output_line += d[column][i].ljust(max_len[column], " ") + "  "
             else:
+                state = d[column][i].ljust(max_len[column], " ")
                 if d[column][i] == "running":
-                    output_line += colors["green"] + d[column][i].ljust(
-                        max_len[column], " ") + "  " + colors["clear"]
-                elif d[column][i] == "stopped" or d[column][i] == "terminated":
-                    output_line += colors["red"] + d[column][i].ljust(
-                        max_len[column], " ") + "  " + colors["clear"]
+                    output_line += colorize_str(state, "green")
+                elif d[column][i] in ["stopped", "terminated"]:
+                    output_line += colorize_str(state, "red")
+                elif d[column][i] in ["pending", "stopping", "shutting-down"]:
+                    output_line += colorize_str(state, "yellow")
+                elif d[column][i] == "rebooting":
+                    output_line += colorize_str(state, "blue")
                 else:
-                    output_line += d[column][i].ljust(
-                        max_len[column], " ") + "  "
+                    output_line += output_line
         output.append(output_line)
 
     for o in output:
