@@ -9,7 +9,7 @@
 Using pip:
 
 ```
-pip install git+https://github.com/yagays/ec2inst.git  
+$ pip install git+https://github.com/yagays/ec2inst.git  
 ```
 
 or from source:
