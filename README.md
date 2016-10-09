@@ -1,10 +1,18 @@
 # ec2inst
 
-`ec2inst` provides AWS EC2 instance console for cli.
+`ec2inst` provides AWS EC2 instance console for CLI.
 
 ![](screenshot/ec2inst_terminal.png)
 
 ## Install
+
+Using pip:
+
+```
+pip install git+https://github.com/yagays/ec2inst.git  
+```
+
+or from source:
 
 ```
 $ git clone https://github.com/yagays/ec2inst
@@ -34,7 +42,7 @@ optional arguments:
 
 ### Using AWS CLI credentials
 
-If you have already use [AWS CLI](https://aws.amazon.com/cli/), you can specify your profile to visualize.
+If you have already use [AWS CLI](https://aws.amazon.com/cli/), you can specify your profile.
 
 ```
 # use "yag_ays" profile

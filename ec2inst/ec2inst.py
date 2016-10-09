@@ -8,7 +8,6 @@ from collections import defaultdict
 
 
 def colorize_str(s, color):
-    # http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-lifecycle.html
     if color == "green":
         output_str = "\033[32m" + s + "\033[0m"
     elif color == "red":
@@ -58,7 +57,7 @@ def prettyprint_table(d, columns):
     for k, v in d.items():
         max_len[k] = max([len(s) for s in v] + [len(k)])
 
-    # column
+    # header and boarder
     output_column = ""
     output_hr = ""
     for column in columns:
@@ -70,10 +69,10 @@ def prettyprint_table(d, columns):
     for i in range(0, len(d[columns[0]])):
         output_line = ""
         for column in columns:
-
             if column != "instance_state":
                 output_line += d[column][i].ljust(max_len[column], " ") + "  "
             else:
+                # http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-lifecycle.html
                 state = d[column][i].ljust(max_len[column], " ")
                 if d[column][i] == "running":
                     output_line += colorize_str(state, "green")
@@ -119,7 +118,8 @@ def main():
                             ]
 
     # argparse
-    parser = argparse.ArgumentParser(description="AWS EC2 instance console for cli")
+    parser = argparse.ArgumentParser(
+        description="AWS EC2 instance console for CLI")
     parser.add_argument("-p", "--profile",
                         help="select profile_name in ~/.aws/credentials")
     parser.add_argument("-c", "--columns",
@@ -128,7 +128,7 @@ def main():
     args = parser.parse_args()
     show_column_names = args.columns.split(",")
 
-    # boto3
+    # boto3 connection
     if args.profile:
         session = boto3.Session(profile_name=args.profile)
         aws_client = session.client("ec2")
