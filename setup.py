@@ -6,7 +6,7 @@ setup(
     name="ec2inst",
     packages=['ec2inst'],
     version="0.0.1",
-    description="AWS EC2 instance console for cli",
+    description="AWS EC2 instance console for CLI",
     author="yagays",
     author_email="yanagi.ayase@gmail.com",
     url="https://github.com/yagays/ec2inst",
