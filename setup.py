@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup
+import ec2inst
 
 setup(
     name="ec2inst",
     packages=['ec2inst'],
-    version="0.0.1",
+    version=ec2inst.__version__,
     description="AWS EC2 instance console for CLI",
     author="yagays",
     author_email="yanagi.ayase@gmail.com",
     url="https://github.com/yagays/ec2inst",
-    install_requires=['requests'],
+    install_requires=['boto3'],
     keywords=["AWS", "EC2"],
     entry_points={
         'console_scripts': [
