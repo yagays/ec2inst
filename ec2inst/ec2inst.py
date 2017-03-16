@@ -28,6 +28,9 @@ def make_instance_list(response, columns):
 
         if "Tags" in instance.keys():
             instance_name = instance["Tags"][0]["Value"]
+            for tag in instance["Tags"]:
+                if tag["Key"] == "Name":
+                    instance_name = tag["Value"]
         else:
             instance_name = "-"
         instance_id = instance["InstanceId"]
