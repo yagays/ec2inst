@@ -9,6 +9,8 @@
 Using pip:
 
 ```
+$ pip install ec2inst
+# or
 $ pip install git+https://github.com/yagays/ec2inst.git  
 ```
 
