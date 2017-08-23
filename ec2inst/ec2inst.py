@@ -24,33 +24,34 @@ def colorize_str(s, color):
 def make_instance_list(response, columns):
     output = defaultdict(list)
     for instance_unit in response["Reservations"]:
-        instance = defaultdict(lambda: "-", instance_unit["Instances"][0])
+        for instances in instance_unit["Instances"]:
+            instance = defaultdict(lambda: "-", instances)
 
-        if "Tags" in instance.keys():
-            instance_name = instance["Tags"][0]["Value"]
-            for tag in instance["Tags"]:
-                if tag["Key"] == "Name":
-                    instance_name = tag["Value"]
-        else:
-            instance_name = "-"
-        instance_id = instance["InstanceId"]
-        instance_type = instance["InstanceType"]
-        availability_zone = instance["Placement"]["AvailabilityZone"]
-        instance_state = instance["State"]["Name"]
-        public_dns_name = instance["PublicDnsName"]
-        public_ip_address = instance["PublicIpAddress"]
-        private_ip_address = instance["PrivateIpAddress"]
-        key_name = instance["KeyName"]
-        monitoring = instance["Monitoring"]["State"]
-        launch_time = instance["LaunchTime"].strftime("%Y/%m/%d %H:%M:%S")
-        security_group = ",".join([g["GroupName"]
-                                   for g in instance["SecurityGroups"]])
+            if "Tags" in instance.keys():
+                instance_name = instance["Tags"][0]["Value"]
+                for tag in instance["Tags"]:
+                    if tag["Key"] == "Name":
+                        instance_name = tag["Value"]
+            else:
+                instance_name = "-"
+            instance_id = instance["InstanceId"]
+            instance_type = instance["InstanceType"]
+            availability_zone = instance["Placement"]["AvailabilityZone"]
+            instance_state = instance["State"]["Name"]
+            public_dns_name = instance["PublicDnsName"]
+            public_ip_address = instance["PublicIpAddress"]
+            private_ip_address = instance["PrivateIpAddress"]
+            key_name = instance["KeyName"]
+            monitoring = instance["Monitoring"]["State"]
+            launch_time = instance["LaunchTime"].strftime("%Y/%m/%d %H:%M:%S")
+            security_group = ",".join([g["GroupName"]
+                                       for g in instance["SecurityGroups"]])
 
-        image_id = instance["ImageId"]
-        instance_state_code = str(instance["State"]["Code"])
+            image_id = instance["ImageId"]
+            instance_state_code = str(instance["State"]["Code"])
 
-        for column in columns:
-            output[column].append(eval(column))
+            for column in columns:
+                output[column].append(eval(column))
     return output
 
 
